@@ -38,8 +38,8 @@ var server = http.createServer(
 					response.end(err + "\n");
 					return;
 				}
-				// Read data from file (using fast node ASCII encoding).
-				var data = buffer.toString('ascii').split(" "); // Split by space
+			// Read data from file (using fast node ASCII encoding).
+			var data = buffer.toString('ascii').split(" "); // Split by space
 
             		// Extract temperature from string and divide by 1000 to give celsius
 			var temp  = parseFloat(data[data.length-1].split("=")[1])/1000.0;
