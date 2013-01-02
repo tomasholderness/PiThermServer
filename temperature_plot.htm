@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Temperature Plot</title>
+		<title>PiThermServer - Plot</title>
+   	<meta name="description" content="Plot of temperature from DS18B20 sensor connected to Raspberry Pi">
+	   <meta name="author" content="Tom Holderness">
+	   <meta name="version" content="0.1">
 		<script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 		<script src="http://code.highcharts.com/highcharts.js" type="text/javascript"></script>
 		<script type="text/javascript">
 		
-		var chart; // global
+		var chart; // global chart variable
 
-		// Get data function
+		// Get data from Pi NodeJS server
 		function getData(){
 			$.getJSON('./temperature.json', function(data) {
-				// Populate series
-				//var newa = [{"name":"Object1","data":[1,2]},{"name":"Object2","data":[3,4]}]
-				//var test = [{"name":"Sysload","data":[0.47]}]
-
 				// Create the series
 				var series  = chart.series[0],
 					shift = series.data.length > 20; // shift if the series longer than 20
@@ -29,6 +28,7 @@
 	</script>
 
 	<script type="text/javascript">
+   // Configure the plot
 	$(document).ready(function() {
 	    chart = new Highcharts.Chart({
 		chart: {
@@ -46,20 +46,20 @@
 		    tickPixelInterval: 150,
 		    maxZoom: 20 * 1000,
 		    title: {
-			text: 'Time (sensor called at five second intervals)',
-			margin: 50
+			   text: 'Time (sensor called at one second intervals)',
+			   margin: 50
 			}
 		},
 		yAxis: {
 		    minPadding: 0.2,
 		    maxPadding: 0.2,
 		    title: {
-		        text: 'Temperature (\u00B0C)',
+		        text: 'DS18B20 Temperature Sensor (\u00B10.5\u00B0C)',
 		        margin: 80
 		    }
 		},
 		series: [{
-		    name: 'DS18B20 One Wire Digital Temperature Sensor',
+		    name: 'Temperature \u00B0C',
 		    data: []
 		}]
 	    });        
