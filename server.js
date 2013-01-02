@@ -44,10 +44,10 @@ var server = http.createServer(
             		// Extract temperature from string and divide by 1000 to give celsius
 			var temp  = parseFloat(data[data.length-1].split("=")[1])/1000.0;
 			
-			// Round to one decinal place
+			// Round to one decimal place
 			temp = Math.round(temp * 10) / 10
 			
-			// Return date and temperature
+			// Return date/time and temperature
 			var jsonData = [Date.now(), temp];
 			
 			// Return JSON data	
