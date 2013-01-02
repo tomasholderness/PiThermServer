@@ -25,9 +25,6 @@ var server = http.createServer(
 		var url = require('url').parse(request.url);
 		var pathfile = url.pathname;
 
-		// Print requested file to terminal
-		console.log('Request for: ' + pathfile);
-
 		// Test to see if it's a request for temperature data
 		if (pathfile == '/temperature.json')
 		{
@@ -43,22 +40,31 @@ var server = http.createServer(
 				}
 				// Read data from file (using fast node ASCII encoding).
 				var data = buffer.toString('ascii').split(" "); // Split by space
+
             // Extract temperature from string and divide by 1000 to give celsius
-            var temp  = parseFloat(data[data.length-1].split("=")[1])/1000.0
+            var temp  = parseFloat(data[data.length-1].split("=")[1])/1000.0;
+
+            // Round to one decinal place
+            temp = Math.round(temp * 10) / 10
+
             // Return date and temperature
 				var jsonData = [Date.now(), temp];
-				console.log(jsonData);
-				// Return JSON data in text form				
+
+				// Return JSON data		
 				response.writeHead(200, { "Content-type": "application/json" });		
 				response.end(JSON.stringify(jsonData), "ascii");
 
-				// Log to console
-				console.log('returned JSON data: ' + jsonData);
+				// Log to console (debugging)
+				// console.log('returned JSON data: ' + jsonData);
 				
 			});
 		}
 		else {
-			staticServer.serve(request, response, function (err, result) {
+      	// Print requested file to terminal
+		   console.log('Request for: ' + pathfile);
+
+         // Serve file using node-static			
+         staticServer.serve(request, response, function (err, result) {
 					if (err){
 						// Log the error
 						sys.error("Error serving " + request.url + " - " + err.message);
