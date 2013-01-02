@@ -2,7 +2,7 @@
 
 // Parses data from DS18B20 temperature sensor and servers as a JSON object.
 // Uses node-static module to server a plot of current temperautre (uses highcharts).
-// Tom Holderness (C) 03/01/2013
+// Tom Holderness 03/01/2013
 // Ref: www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
 
 // Load node modules
@@ -61,7 +61,7 @@ var server = http.createServer(
 		}
 		else {
       	// Print requested file to terminal
-		   console.log('Request for: ' + pathfile);
+		   console.log('Request from '+ request.connection.remoteAddress +', for: ' + pathfile);
 
          // Serve file using node-static			
          staticServer.serve(request, response, function (err, result) {
@@ -73,11 +73,10 @@ var server = http.createServer(
 						response.writeHead(err.status, err.headers);
 						response.end('Error 404 - file not found');
 						}
-
 					})
 		}
 });
-
-server.listen(8080);
-
-console.log('Server running at http://localhost:8080/');
+// Enable server
+server.listen(8000);
+// Log message
+console.log('Server running at http://localhost:8080');
