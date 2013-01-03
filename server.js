@@ -78,4 +78,4 @@ var server = http.createServer(
 // Enable server
 server.listen(8000);
 // Log message
-console.log('Server running at http://localhost:8080');
+console.log('Server running at http://localhost:8000');
