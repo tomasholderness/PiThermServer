@@ -22,3 +22,7 @@ References
 ----------
 http://www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
 
+Screenshots
+-----------
+![ScreenShot](http://tomholderness.files.wordpress.com/2013/01/plot1.png)
+
