@@ -24,5 +24,5 @@ http://www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
 
 Screenshots
 -----------
-![ScreenShot](http://tomholderness.files.wordpress.com/2013/01/plot1.png)
+<a href="http://tomholderness.files.wordpress.com/2013/01/plot1.png"><img src="http://tomholderness.files.wordpress.com/2013/01/plot1.png" alt="Temperature plot" width="400"></a>
 
