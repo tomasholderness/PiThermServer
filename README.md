@@ -1,7 +1,7 @@
 PiThermServer
 =============
 
-Simple NodeJS server for the DS18B20 temperature sensor on the Raspberry Pi.
+Simple NodeJS server for the DS18B20 digital temperature sensor on the Raspberry Pi.
 
 Description
 -----------
