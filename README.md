@@ -22,7 +22,9 @@ References
 ----------
 http://www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
 
-Screenshots
------------
-<a href="http://tomholderness.files.wordpress.com/2013/01/plot1.png"><img src="http://tomholderness.files.wordpress.com/2013/01/plot1.png" alt="Temperature plot" width="400"></a>
-
+Screenshots/Images
+------------------
+<p><a href="http://tomholderness.files.wordpress.com/2013/01/plot1.png"><img src="http://tomholderness.files.wordpress.com/2013/01/plot1.png" alt="Temperature plot" width="400"></a></p>
+Screenshot of temperature plot
+<p><a href="http://tomholderness.files.wordpress.com/2013/01/pi_temp_sensor_scaled.jpg"><img src="http://tomholderness.files.wordpress.com/2013/01/pi_temp_sensor_scaled.jpg" width="400"></a></p>
+Raspberry Pi & DS18B20 digital thermometer
