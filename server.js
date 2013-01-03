@@ -47,7 +47,7 @@ var server = http.createServer(
 			// Round to one decimal place
 			temp = Math.round(temp * 10) / 10
 			
-			// Return date/time and temperature
+			// Add date/time to temperature
 			var jsonData = [Date.now(), temp];
 			
 			// Return JSON data	
