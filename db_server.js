@@ -1,8 +1,8 @@
-// server.js - NodeJS server for the PiThermServer project.
+// db_server.js - NodeJS database server for the PiThermServer project.
 
 /* 
-Parses data from DS18B20 temperature sensor and servers as a JSON object.
-Uses node-static module to server a plot of current temperautre (uses highcharts).
+Parses data from DS18B20 temperature sensor, logs in sqlite database and servers as "JSON" arrays.
+Uses node-static module to serve a plot of temperature from database (uses highcharts).
 
 Tom Holderness 03/01/2013
 Ref: www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
