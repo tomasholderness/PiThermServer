@@ -1,9 +1,14 @@
 // server.js - NodeJS server for the PiThermServer project.
 
-// Parses data from DS18B20 temperature sensor and servers as a JSON object.
-// Uses node-static module to server a plot of current temperautre (uses highcharts).
-// Tom Holderness 03/01/2013
-// Ref: www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
+/* 
+Parses data from DS18B20 temperature sensor and servers as a JSON object.
+Uses node-static module to server a plot of current temperautre (uses highcharts).
+
+Tom Holderness 03/01/2013
+Ref: www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
+
+Note that data returned isn't strictly JSON, as only values (time, temp) are returned.
+*/
 
 // Load node modules
 var fs = require('fs');
