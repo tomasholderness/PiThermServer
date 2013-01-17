@@ -36,6 +36,7 @@ var server = http.createServer(
 				{
 					response.writeHead(500, { "Content-type": "text/html" });
 					response.end(err + "\n");
+					console.log('Error serving /temperature.json. ' + err);
 					return;
 				}
 			// Read data from file (using fast node ASCII encoding).
@@ -55,15 +56,28 @@ var server = http.createServer(
 			response.end(JSON.stringify(jsonData), "ascii");
 			// Log to console (debugging)
 			// console.log('returned JSON data: ' + jsonData);
-				
+			
 			});
+		return;	
 		}
-		else {
-      	// Print requested file to terminal
-		   console.log('Request from '+ request.connection.remoteAddress +', for: ' + pathfile);
 
-         // Serve file using node-static			
-         staticServer.serve(request, response, function (err, result) {
+		// Handler for favicon.ico requests
+		if (pathfile == '/favicon.ico'){
+			response.writeHead(200, {'Content-Type': 'image/x-icon'});
+			response.end();
+
+			// Optionally log favicon requests.
+			//console.log('favicon requested');
+			return;
+		}
+
+
+		else {
+			// Print requested file to terminal
+			console.log('Request from '+ request.connection.remoteAddress +', for: ' + pathfile);
+
+			// Serve file using node-static			
+			staticServer.serve(request, response, function (err, result) {
 					if (err){
 						// Log the error
 						sys.error("Error serving " + request.url + " - " + err.message);
@@ -71,7 +85,9 @@ var server = http.createServer(
 						// Respond to the client
 						response.writeHead(err.status, err.headers);
 						response.end('Error 404 - file not found');
+						return;
 						}
+					return;	
 					})
 		}
 });
