@@ -21,6 +21,39 @@ var nodestatic = require('/usr/local/lib/node_modules/node-static');
 // Setup static server for current directory
 var staticServer = new nodestatic.Server(".");
 
+
+// Log temperature to database
+// open database:
+// if no error
+
+	// Function to read thermal sensor and return JSON representation of first word (i.e. the data)
+	// Note device location is sensor specific.
+	fs.readFile('/sys/bus/w1/devices/28-00000400a88a/w1_slave', function(err, buffer)
+	{
+		if (err)
+		{
+			response.writeHead(500, { "Content-type": "text/html" });
+			response.end(err + "\n");
+			console.log('Error serving /temperature.json. ' + err);
+			return;
+		}
+	// Read data from file (using fast node ASCII encoding).
+	var data = buffer.toString('ascii').split(" "); // Split by space
+
+	// Extract temperature from string and divide by 1000 to give celsius
+	var temp  = parseFloat(data[data.length-1].split("=")[1])/1000.0;
+	
+	// Round to one decimal place
+	temp = Math.round(temp * 10) / 10
+	
+	// Add date/time to temperature
+	var jsonData = [Date.now(), temp];
+
+	// Write data to database.
+
+// Temperature now plot (i.e. limit 1 order desc query)
+// Temperature log plot (i.e. get data over time range?)
+
 // Setup node http server
 var server = http.createServer(
 	// Our main server function
