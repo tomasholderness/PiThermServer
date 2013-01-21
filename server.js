@@ -7,7 +7,6 @@ Uses node-static module to serve a plot of current temperature (uses highcharts)
 Tom Holderness 03/01/2013
 Ref: www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
 
-Note that data returned isn't strictly JSON, as only values (time, temp) are returned.
 */
 
 // Load node modules
@@ -54,7 +53,11 @@ var server = http.createServer(
 			temp = Math.round(temp * 10) / 10
 			
 			// Add date/time to temperature
-			var jsonData = [Date.now(), temp];
+			var jsonData = {
+                     temperature_record:[{
+                        unix_time: Date.now(), 
+                        celsius: temp
+                     }]};
 			
 			// Return JSON data	
 			response.writeHead(200, { "Content-type": "application/json" });		
@@ -79,7 +82,7 @@ var server = http.createServer(
 
 		else {
 			// Print requested file to terminal
-			console.log('Request from '+ request.connection.remoteAddress +', for: ' + pathfile);
+			console.log('Request from '+ request.connection.remoteAddress +' for: ' + pathfile);
 
 			// Serve file using node-static			
 			staticServer.serve(request, response, function (err, result) {
