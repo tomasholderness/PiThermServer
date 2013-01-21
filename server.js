@@ -11,7 +11,7 @@ var sys = require('sys');
 var http = require('http');
 
 // Use node-static module to server chart for client-side dynamic graph
-var nodestatic = require('/usr/local/lib/node_modules/node-static');
+var nodestatic = require('node-static');
 
 // Setup static server for current directory
 var staticServer = new nodestatic.Server(".");
