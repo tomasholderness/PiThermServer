@@ -1,13 +1,12 @@
 // server.js - NodeJS server for the PiThermServer project.
 
 /* 
-Parses data from DS18B20 temperature sensor and servers as a JSON object.
+
+Parses data from DS18B20 temperature sensor and serves as a JSON object.
 Uses node-static module to serve a plot of current temperature (uses highcharts).
 
 Tom Holderness 03/01/2013
 Ref: www.cl.cam.ac.uk/freshers/raspberrypi/tutorials/temperature/
-
-Note that data returned isn't strictly JSON, as only values (time, temp) are returned.
 */
 
 // Load node modules
@@ -16,7 +15,7 @@ var sys = require('sys');
 var http = require('http');
 
 // Use node-static module to server chart for client-side dynamic graph
-var nodestatic = require('/usr/local/lib/node_modules/node-static');
+var nodestatic = require('node-static');
 
 // Setup static server for current directory
 var staticServer = new nodestatic.Server(".");
@@ -87,7 +86,11 @@ var server = http.createServer(
 			temp = Math.round(temp * 10) / 10
 			
 			// Add date/time to temperature
-			var jsonData = [Date.now(), temp];
+			var jsonData = {
+                     temperature_record:[{
+                        unix_time: Date.now(), 
+                        celsius: temp
+                     }]};
 			
 			// Return JSON data	
 			response.writeHead(200, { "Content-type": "application/json" });		
@@ -112,7 +115,7 @@ var server = http.createServer(
 
 		else {
 			// Print requested file to terminal
-			console.log('Request from '+ request.connection.remoteAddress +', for: ' + pathfile);
+			console.log('Request from '+ request.connection.remoteAddress +' for: ' + pathfile);
 
 			// Serve file using node-static			
 			staticServer.serve(request, response, function (err, result) {
