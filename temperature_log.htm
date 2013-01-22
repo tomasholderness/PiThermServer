@@ -13,7 +13,7 @@
 
 		// Get data from Pi NodeJS server
 		function getData(){
-			$.getJSON('./temperature.json', function(data) {
+			$.getJSON('./temperature_now.json', function(data) {
 				// Create the series
 				var series  = chart.series[0],
 					shift = series.data.length > 20; // shift if the series longer than 20

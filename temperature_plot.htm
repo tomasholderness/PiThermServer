@@ -13,15 +13,13 @@
 
 		// Get data from Pi NodeJS server
 		function getData(){
-			$.getJSON('./temperature.json', function(data) {
+			$.getJSON('./temperature_now.json', function(data) {
             //alert(data.unix_time);
 				// Create the series
 				var series  = chart.series[0],
 					shift = series.data.length > 20; // shift if the series longer than 20
-	         
 				// Add the point
 				chart.series[0].addPoint([data.temperature_record[0].unix_time, data.temperature_record[0].celsius], true, shift);
-
 				// Repeat this function call after 1 second
 				setTimeout(getData, 1000);
 				});

@@ -76,7 +76,7 @@ function logTemp(interval){
 function selectTemp(num_records, callback){
    // Num records is an SQL filter from latest record back trough time series, callback is output function   
    // Note we're calling all data here, if the time series is large this may break stuff.
-   var current_temp = db.all("SELECT * FROM temperature_records ORDER BY unix_time DESC LIMIT ?;", num_records,
+   var current_temp = db.all("SELECT * FROM (SELECT * FROM temperature_records ORDER BY unix_time DESC LIMIT ?) ORDER BY unix_time;", num_records,
       function(err, rows){
          if (err){
 			   response.writeHead(500, { "Content-type": "text/html" });
@@ -103,13 +103,14 @@ var server = http.createServer(
 		if (pathfile == '/temperature_query.json'){
          // Test to see if number of observations was specified as url query
          if (query.num_obs){
-            console.log(query.num_obs);
             var num_obs = parseInt(query.num_obs);
          }
          else{
          // If not specified default to 20. Note use -1 in query string to get all.
             var num_obs = 20;
          }
+         // Send a message to console log
+         console.log('Database query request from '+ request.connection.remoteAddress +' for ' + num_obs + ' records.');
          // call selectTemp function to get data from database
          selectTemp(num_obs, function(data){
             response.writeHead(200, { "Content-type": "application/json" });		
