@@ -19,7 +19,7 @@
 		//		});
 	//		}
       function getData(){
-         $.getJSON('./temperature_query.json?num_obs=100', function(data){
+         $.getJSON('./temperature_query.json?num_obs=-1', function(data){
             var series = {
                id: 'series',
                name: 'Temperature \u00B0C',
@@ -52,6 +52,11 @@
          spaceRight: 20,
          events: {load: getData()}
             },
+     title: {
+		    text: 'Raspberry Pi Temperature Plot - logged temperatures'},
+     subtitle: {
+             text: 'Click and drag in the plot area to zoom in'},
+            
      xAxis: {
 		    type: 'datetime',
 		    tickPixelInterval: 150,
