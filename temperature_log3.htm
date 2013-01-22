@@ -19,10 +19,11 @@
 		//		});
 	//		}
       function getData(){
-         $.getJSON('./temperature_query.json?num_obs=10', function(data){
+         $.getJSON('./temperature_query.json?num_obs=100', function(data){
             var series = {
                id: 'series',
                name: 'Temperature \u00B0C',
+               type: 'area',
                data: []
                };
             var i = 0;
@@ -46,7 +47,9 @@
    chart = new Highcharts.Chart({
       chart: {
          renderTo: 'container',
-         type: 'spline',
+         //type: 'spline',
+         zoomType: 'x',
+         spaceRight: 20,
          events: {load: getData()}
             },
      xAxis: {
@@ -60,10 +63,39 @@
       yAxis: {
 		    minPadding: 0.2,
 		    maxPadding: 0.2,
+          showFirstLabel: false,
 		    title: {
 		        text: 'DS18B20 Temperature Sensor (\u00B10.5\u00B0C)',
 		        margin: 80
 		    }},
+          plotOptions: {
+                         area: {
+                             fillColor: {
+                                 linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                                 stops: [
+                                     [0, Highcharts.getOptions().colors[0]],
+                                     [1, 'rgba(2,0,0,0)']
+                                 ]
+                             },
+                             lineWidth: 1,
+                             marker: {
+                                 enabled: false,
+                                 states: {
+                                     hover: {
+                                         enabled: true,
+                                         radius: 5
+                                     }
+                                 }
+                             },
+                             shadow: false,
+                             states: {
+                                 hover: {
+                                     lineWidth: 1
+                                 }
+                             },
+                             threshold: null
+                         }
+                     },
    })
 });        
 
