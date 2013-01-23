@@ -159,8 +159,8 @@ var server = http.createServer(
 		}
 });
 
-// Start temperature logging
-var msecs = (60 * 15) * 1000; // log interval duration in milliseconds
+// Start temperature logging (every 5 min).
+var msecs = (60 * 5) * 1000; // log interval duration in milliseconds
 logTemp(msecs);
 // Send a message to console
 console.log('Server is logging to database at '+msecs+'ms intervals');
