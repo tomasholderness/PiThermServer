@@ -73,10 +73,12 @@ function logTemp(interval){
 };
 
 // Get temperature records from database
-function selectTemp(num_records, callback){
-   // Num records is an SQL filter from latest record back trough time series, callback is output function   
-   // Note we're calling all data here, if the time series is large this may break stuff.
-   var current_temp = db.all("SELECT * FROM (SELECT * FROM temperature_records ORDER BY unix_time DESC LIMIT ?) ORDER BY unix_time;", num_records,
+function selectTemp(num_records, start_date, callback){
+   // - Num records is an SQL filter from latest record back trough time series, 
+   // - start_date is the first date in the time-series required, 
+   // - callback is the output function
+   
+   var current_temp = db.all("SELECT * FROM (SELECT * FROM temperature_records WHERE unix_time > ? ORDER BY unix_time DESC LIMIT ?) ORDER BY unix_time;", start_date, num_records,
       function(err, rows){
          if (err){
 			   response.writeHead(500, { "Content-type": "text/html" });
@@ -107,12 +109,18 @@ var server = http.createServer(
          }
          else{
          // If not specified default to 20. Note use -1 in query string to get all.
-            var num_obs = 20;
+            var num_obs = -1;
          }
+         if (query.start_date){
+            var start_date = query.start_date;
+         }
+         else{
+            var start_date = '1970-01-01T00:00';
+         }   
          // Send a message to console log
          console.log('Database query request from '+ request.connection.remoteAddress +' for ' + num_obs + ' records.');
          // call selectTemp function to get data from database
-         selectTemp(num_obs, function(data){
+         selectTemp(num_obs, start_date, function(data){
             response.writeHead(200, { "Content-type": "application/json" });		
 	         response.end(JSON.stringify(data), "ascii");
          });
