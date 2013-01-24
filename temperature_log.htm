@@ -10,9 +10,9 @@
 		<script type="text/javascript">
 		
       var chart; // global chart variable
-      // Get data from server in JSON format
+      // Get data from server in JSON format (query time series when sensor was outside).
       function getData(){
-         $.getJSON('./temperature_query.json?num_obs=-1', function(data){
+         $.getJSON('/temperature_query.json?num_obs=-1&start_date=2013-01-23T16:00', function(data){
             var series = {
                id: 'series',
                name: 'Temperature \u00B0C',
