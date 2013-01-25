@@ -10,12 +10,12 @@
 		<script type="text/javascript">
 		
       var chart; // global chart variable
-      // Get data from server in JSON format
+      // Get data from server in JSON format (query time series when sensor was outside).
       function getData(){
-         $.getJSON('./temperature_query.json?num_obs=-1', function(data){
+         $.getJSON('/temperature_query.json?num_obs=-1&start_date=2013-01-23T16:00', function(data){
             var series = {
                id: 'series',
-               name: 'Temperature \u00B0C',
+               name: 'DS18B20 sensor (\u00B10.5\u00B0C)',
                type: 'area',
                data: []
                };
@@ -43,9 +43,11 @@
             events: {load: getData()}
                },
         title: {
-		       text: 'Raspberry Pi Temperature Plot - logged temperatures'},
+		       text: 'Plot of temperatures from Raspberry Pi logger'},
         subtitle: {
-                text: 'Click and drag in the plot area to zoom in'},
+                text: 'Click and drag in the plot area to zoom in',
+                align: 'right',  
+               },
                
         xAxis: {
 		       type: 'datetime',
@@ -53,15 +55,15 @@
 		       maxZoom: 20 * 1000,
 		       title: {
 			      text: 'Time',
-			      margin: 50
+			      margin: 15
 			   }},
          yAxis: {
 		       minPadding: 0.2,
 		       maxPadding: 0.2,
              showFirstLabel: false,
 		       title: {
-		           text: 'DS18B20 Temperature Sensor (\u00B10.5\u00B0C)',
-		           margin: 80
+		           text: 'Temperature \u00B0C',
+		           margin: 15
 		       }},
              plotOptions: {
                             area: {
@@ -69,7 +71,7 @@
                                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
                                     stops: [
                                         [0, Highcharts.getOptions().colors[0]],
-                                        [1, 'rgba(2,0,0,0)']
+                                        [1, 'rgba(2,0,0,0)'],
                                     ]
                                 },
                                 lineWidth: 1,
@@ -89,7 +91,9 @@
                                     }
                                 },
                                 threshold: null
-                            }
+                            },
+                       
+                              
                         },
          })
    });        
