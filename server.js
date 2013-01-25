@@ -14,6 +14,7 @@ var fs = require('fs');
 var sys = require('sys');
 var http = require('http');
 var sqlite3 = require('sqlite3');
+var sensors = require('./sensors');
 
 // Use node-static module to server chart for client-side dynamic graph
 var nodestatic = require('node-static');
@@ -21,74 +22,8 @@ var nodestatic = require('node-static');
 // Setup static server for current directory
 var staticServer = new nodestatic.Server(".");
 
-// Setup database connection for logging
-var db = new sqlite3.Database('./piTemps.db');
-
-// Write a single temperature record in JSON format to database table.
-function insertTemp(data){
-   // data is a javascript object   
-   var statement = db.prepare("INSERT INTO temperature_records VALUES (?, ?)");
-   // Insert values into prepared statement
-   statement.run(data.temperature_record[0].unix_time, data.temperature_record[0].celsius);
-   // Execute the statement
-   statement.finalize();
-}
-
-// Read current temperature from sensor
-function readTemp(callback){
-   fs.readFile('/sys/bus/w1/devices/28-00000400a88a/w1_slave', function(err, buffer)
-	{
-      if (err){
-         console.error(err);
-         process.exit(1);
-      }
-
-      // Read data from file (using fast node ASCII encoding).
-      var data = buffer.toString('ascii').split(" "); // Split by space
-
-      // Extract temperature from string and divide by 1000 to give celsius
-      var temp  = parseFloat(data[data.length-1].split("=")[1])/1000.0;
-
-      // Round to one decimal place
-      temp = Math.round(temp * 10) / 10;
-
-      // Add date/time to temperature
-   	var data = {
-            temperature_record:[{
-            unix_time: Date.now(),
-            celsius: temp
-            }]};
-
-      // Execute call back with data
-      callback(data);
-   });
-};
-
-// Create a wrapper function which we'll use specifically for logging
-function logTemp(interval){
-      // Call the readTemp function with the insertTemp function as output to get initial reading
-      readTemp(insertTemp);
-      // Set the repeat interval (milliseconds). Third argument is passed as callback function to first (i.e. readTemp(insertTemp)).
-      setInterval(readTemp, interval, insertTemp);
-};
-
-// Get temperature records from database
-function selectTemp(num_records, start_date, callback){
-   // - Num records is an SQL filter from latest record back trough time series, 
-   // - start_date is the first date in the time-series required, 
-   // - callback is the output function
-   var current_temp = db.all("SELECT * FROM (SELECT * FROM temperature_records WHERE unix_time > (strftime('%s',?)*1000) ORDER BY unix_time DESC LIMIT ?) ORDER BY unix_time;", start_date, num_records,
-      function(err, rows){
-         if (err){
-			   response.writeHead(500, { "Content-type": "text/html" });
-			   response.end(err + "\n");
-			   console.log('Error serving querying database. ' + err);
-			   return;
-				      }
-         data = {temperature_record:[rows]}
-         callback(data);
-   });
-};
+// Create a new instance of a temperature sensor
+var thermo = new sensors.temperature('28-00000400a88a');
 
 // Setup node http server
 var server = http.createServer(
@@ -128,7 +63,7 @@ var server = http.createServer(
       
       // Test to see if it's a request for current temperature   
       if (pathfile == '/temperature_now.json'){
-            readTemp(function(data){
+            thermo.read(function(data){
 			      response.writeHead(200, { "Content-type": "application/json" });		
 			      response.end(JSON.stringify(data), "ascii");
                });
@@ -167,11 +102,11 @@ var server = http.createServer(
 });
 
 // Start temperature logging (every 5 min).
-var msecs = (60 * 5) * 1000; // log interval duration in milliseconds
-logTemp(msecs);
+//var msecs = (60 * 5) * 1000; // log interval duration in milliseconds
+//logTemp(msecs);
 // Send a message to console
-console.log('Server is logging to database at '+msecs+'ms intervals');
+//console.log('Server is logging to database at '+msecs+'ms intervals');
 // Enable server
-server.listen(8000);
+server.listen(8080);
 // Log message
 console.log('Server running at http://localhost:8000');
