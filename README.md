@@ -16,10 +16,19 @@ Files
 * build_database.sh - shell script to create database schema
 * sample_database.db - example database with real world data from the Pi recorded in UK Jan-Feb 2013
 
-Usage
------
-* With sensor attached load kernel modules: sudo load_gpio.sh 
-* Start server: node server.js
+Dependencies
+------------
+* NodeJS
+* SQLite3
+* node-sqlte3 module
+
+Install/Setup
+-------------
+1. Run "load_gpio.sh" script as root to load kernel modules for the sensor
+2. Run the "build_database.sh" script to create "piTemps.db". Note this wil drop any existing database of the same name in the directory
+3. Open "server.js" and edit line 35 to read the serial number of your sensor in /sys/bus.
+4. In a terminal run "node server.js" to start the server.
+5. Open a web browser on the Pi and go to http://localhost:8000/temperature_plot.htm to see a plot of current temperature. Go to http://localhost:8000/temperature_log.htm to see a plot of logged temperature. 
 
 References
 ----------
