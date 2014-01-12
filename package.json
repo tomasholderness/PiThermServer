@@ -1,0 +1,33 @@
+{
+  "name": "PiThermServer",
+  "version": "0.0.1",
+  "description": "Simple NodeJS server and SQLite3 logger for the DS18B20 digital temperature sensor on the Raspberry Pi.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/talltom/PiThermServer.git"
+  },
+  "keywords": [
+    "Raspberry",
+    "Pi",
+    "Temperature",
+    "Server",
+    "DS18B20",
+    "GPIO",
+    "Sensor"
+  ],
+  "author": "Tom Holderness",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/talltom/PiThermServer/issues"
+  },
+  "homepage": "https://github.com/talltom/PiThermServer",
+  "dependencies": {
+    "sqlite3": "~2.1.19",
+    "node-static": "~0.7.3"
+  }
+}
