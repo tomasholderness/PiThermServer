@@ -3,7 +3,7 @@
 # load_gpio.sh -  Load Raspberry Pi GPIO/therm modules to kernel
 #
 # Note - this script must be run as root:
-# sudo load_gpio_therm_modules.sh
+# sudo load_gpio.sh
 #
 # Tom Holderness 03/01/2013
 #
