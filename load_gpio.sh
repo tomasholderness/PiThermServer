@@ -3,7 +3,7 @@
 # load_gpio.sh -  Load Raspberry Pi GPIO/therm modules to kernel
 #
 # Note - this script must be run as root:
-# sudo load_gpio_therm_modules.sh
+# sudo load_gpio.sh
 #
 # Tom Holderness 03/01/2013
 #
@@ -11,8 +11,34 @@
 
 set -e   # exit on errors (lazy error checking)
 
-modprobe w1-gpio # load gpio module
-modprobe w1-therm # load temperature module
+MODULES_FILE="/etc/modules"
 
-exit 0
+function processYes {
+  # new line just to be safe
+  echo "" >> $MODULES_FILE
+
+  if [ $(grep -c "w1-gpio" $MODULES_FILE) == "0" ]; then
+      echo "w1-gpio" >> $MODULES_FILE
+  fi
+
+  if [ $(grep -c "w1-therm" $MODULES_FILE) == "0" ]; then
+      echo "w1-therm" >> $MODULES_FILE
+  fi
+
+  echo "All done. "
+}
+
+# modprobe w1-gpio # load gpio module
+# modprobe w1-therm # load temperature module
+
+echo "Modules loaded for current session."
+echo -n "Do you want to add the modules to /etc/modules? [yn]: "
+
+while read answer; do
+  case "$answer" in
+    y) processYes; exit 0;;
+    n) echo "Nothing more to do. "; exit 0;;
+    *) echo -n "Option invalid. Try again [yn]: ";;
+  esac
+done
 
